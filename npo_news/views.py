@@ -24,6 +24,21 @@ class NewAPIView(APIView, PageNumberPagination):
                                                                  many=True,
                                                                  context={'request': request}).data)
 
+    def post(self, request, *args, **kwargs):
+        title = request.data.get('title')
+        description = request.data.get('description')
+        created_date = request.data.get('created_date')
+        image = request.data.get('image')
+        link = request.data.get('link')
+        news = News.objects.create(title=title,
+                                   description=description,
+                                   created_date=created_date,
+                                   image=image,
+                                   link=link)
+        news.save()
+        return Response(data=self.serializer_class(news).data,
+                        status=status.HTTP_201_CREATED)
+
 
 class NewDetailAPIView(APIView):
     allow_method = ['GET', 'PUT', 'DELETE']
@@ -40,13 +55,18 @@ class NewDetailAPIView(APIView):
         created_date = request.data.get('created_date')
         image = request.data.get('image')
         link = request.data.get('link')
+        news.title = title
+        news.description = description
+        news.created_date = created_date
+        news.image = image
+        news.link = link
 
         news.save()
         return Response(data=self.serializer_class(news).data,
-                        status=status.HTTP_201_CREATED)
+                        status=status.HTTP_200_OK)
 
     def delete(self, request, id, *args, **kwargs):
         news = News.objects.get(id=id)
         news.delete()
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_202_ACCEPTED)
