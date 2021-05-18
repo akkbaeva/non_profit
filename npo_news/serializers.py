@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from npo_news.models import News
+from npo_news.models import News, NewsFavorite
+from npo_user.serializers import NPOUserSerializer
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -11,3 +12,12 @@ class NewsSerializer(serializers.ModelSerializer):
                   'created_date',
                   'image',
                   'link')
+
+
+class NewsFavoriteSerializer(serializers.ModelSerializer):
+    user = NPOUserSerializer
+    news = NewsSerializer
+
+    class Meta:
+        model = NewsFavorite
+        fields = 'saved'

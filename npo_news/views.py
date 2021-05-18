@@ -5,8 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from npo_news.models import News
-from npo_news.serializers import NewsSerializer
+from npo_news.models import News, NewsFavorite
+from npo_news.serializers import NewsSerializer, NewsFavoriteSerializer
 
 
 class NewAPIView(APIView, PageNumberPagination):
@@ -27,12 +27,10 @@ class NewAPIView(APIView, PageNumberPagination):
     def post(self, request, *args, **kwargs):
         title = request.data.get('title')
         description = request.data.get('description')
-        created_date = request.data.get('created_date')
         image = request.data.get('image')
         link = request.data.get('link')
         news = News.objects.create(title=title,
                                    description=description,
-                                   created_date=created_date,
                                    image=image,
                                    link=link)
         news.save()
@@ -52,12 +50,10 @@ class NewDetailAPIView(APIView):
         news = News.objects.get(id=id)
         title = request.data.get('title')
         description = request.data.get('description')
-        created_date = request.data.get('created_date')
         image = request.data.get('image')
         link = request.data.get('link')
         news.title = title
         news.description = description
-        news.created_date = created_date
         news.image = image
         news.link = link
 
@@ -70,3 +66,32 @@ class NewDetailAPIView(APIView):
         news.delete()
 
         return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class NewFavoriteAPIView(APIView):
+    allow_methods = ['GET', 'POST', 'DELETE']
+    serializer_class = NewsFavoriteSerializer
+
+    def get(self, request, id):
+        saved = NewsFavorite.objects.create(id=id)
+        saved = NewsFavorite.objects.filter(user_id=request.user)
+        return Response(data=NewsFavoriteSerializer(saved).data,
+                        status=status.HTTP_200_OK)
+
+    def post(self, request):
+        new_id = request.data.get('id_news')
+        saved = NewsFavorite.objects.get(new_id=new_id,
+                                         user_id=request.user)
+        saved.save()
+        return Response(data=NewsFavoriteSerializer(saved).data,
+                        status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        new_id = request.data.get('new_id')
+        saved = NewsFavorite.objects.get(new_id=new_id,
+                                         user_id=request.user)
+        saved.delete()
+        saved.save()
+        return Response(data=NewsFavoriteSerializer(saved).data,
+                        status=status.HTTP_200_OK)
+
