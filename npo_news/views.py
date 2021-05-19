@@ -72,26 +72,24 @@ class NewFavoriteAPIView(APIView):
     allow_methods = ['GET', 'POST', 'DELETE']
     serializer_class = NewsFavoriteSerializer
 
-    def get(self, request, id):
-        saved = NewsFavorite.objects.create(id=id)
-        saved = NewsFavorite.objects.filter(user_id=request.user)
+    def get(self, request):
+        saved = NewsFavorite.objects.filter(user=request.user)
         return Response(data=NewsFavoriteSerializer(saved).data,
                         status=status.HTTP_200_OK)
 
     def post(self, request):
-        new_id = request.data.get('id_news')
-        saved = NewsFavorite.objects.get(new_id=new_id,
-                                         user_id=request.user)
+        news_id = request.data.get('news_id')
+        saved = NewsFavorite.objects.get(news_id=news_id,
+                                         user=request.user)
         saved.save()
         return Response(data=NewsFavoriteSerializer(saved).data,
-                        status=status.HTTP_200_OK)
+                        status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        new_id = request.data.get('new_id')
-        saved = NewsFavorite.objects.get(new_id=new_id,
+        news_id = request.data.get('news_id')
+        saved = NewsFavorite.objects.get(news_id=news_id,
                                          user_id=request.user)
         saved.delete()
-        saved.save()
         return Response(data=NewsFavoriteSerializer(saved).data,
-                        status=status.HTTP_200_OK)
+                        status=status.HTTP_204_NO_CONTENT)
 

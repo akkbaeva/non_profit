@@ -20,4 +20,4 @@ class NewsFavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NewsFavorite
-        fields = 'saved'
+        fields = 'id user news'
