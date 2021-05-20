@@ -12,3 +12,11 @@ class NPOLawSerializer(serializers.ModelSerializer):
                   'created_date',
                   'file')
 
+
+class LawFavoriteSerializer(serializers.ModelSerializer):
+    user = NPOLawSerializer
+    law = NPOLawSerializer
+
+    class Meta:
+        model = NPOLaw
+        fields = 'id user law'

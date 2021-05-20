@@ -2,6 +2,9 @@ from django.db import models
 
 
 # Create your models here.
+from npo_user.models import NPOUser
+
+
 class NPOLaw(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -11,3 +14,10 @@ class NPOLaw(models.Model):
     def __str__(self):
         return self.title
 
+
+class LawFavorite(models.Model):
+    user = models.ForeignKey(NPOUser, on_delete=models.CASCADE,
+                             related_name='saved',
+                             null=True)
+    law = models.ForeignKey(NPOLaw, on_delete=models.CASCADE,
+                            null=True)

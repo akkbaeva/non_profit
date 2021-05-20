@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
-from npo_news.models import News
+from npo_user.models import NPOUser
 
-admin.site.register(News)
+admin.site.register(NPOUser)
