@@ -92,4 +92,3 @@ class NewFavoriteAPIView(APIView):
         saved.delete()
         return Response(data=NewsFavoriteSerializer(saved).data,
                         status=status.HTTP_204_NO_CONTENT)
-

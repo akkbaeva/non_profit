@@ -17,7 +17,7 @@ class NPOLaw(models.Model):
 
 class LawFavorite(models.Model):
     user = models.ForeignKey(NPOUser, on_delete=models.CASCADE,
-                             related_name='saved',
+                             related_name='favorite',
                              null=True)
     law = models.ForeignKey(NPOLaw, on_delete=models.CASCADE,
                             null=True)

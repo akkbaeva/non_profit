@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from npo_publication.models import Publication
-from npo_publication.serializers import PublicationSerializer
+from npo_publication.serializers import PublicationSerializer, PublicationFavoriteSerializer
 
 
 class PublicationAPIView(APIView, PageNumberPagination):
@@ -66,3 +66,28 @@ class PublicationDetailAPIView(APIView):
 
         return Response(data=self.serializer_class(pub).data,
                         status=status.HTTP_202_ACCEPTED)
+
+
+class PublicationFavoriteAPIView(APIView):
+    allow_methods = ['GET', 'POST', 'DELETE']
+    serializers_class = PublicationSerializer
+
+    def get(self, request):
+        checkbox = Publication.objects.filter(user=request.user)
+        return Response(data=PublicationFavoriteSerializer(checkbox).data)
+
+    def post(self, request):
+        pub_id = request.data.get('pub_id')
+        checkbox = Publication.objects.get(pub_id=pub_id,
+                                           user=request.user)
+        checkbox.save()
+        return Response(data=PublicationFavoriteSerializer(checkbox).data,
+                        status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        pub_id = request.data.get('pub_id')
+        checkbox = Publication.objects.get(pub_id=pub_id,
+                                           user_id=request.user)
+        checkbox.delete()
+        return Response(data=PublicationFavoriteSerializer(checkbox).data,
+                        status=status.HTTP_204_NO_CONTENT)

@@ -73,21 +73,21 @@ class LawFavoriteAPIView(APIView):
     serializer_class = NPOLawSerializer
 
     def get(self, request):
-        saved = LawFavorite.objects.filter(user=request.user)
-        return Response(data=NPOLawSerializer(saved).data)
+        favorite = LawFavorite.objects.filter(user=request.user)
+        return Response(data=NPOLawSerializer(favorite).data)
 
     def post(self, request):
         law_id = request.data.get('law_id')
-        saved = LawFavorite.objects.get(law_id=law_id,
-                                        user=request.user)
-        saved.save()
-        return Response(data=NPOLawSerializer(saved).data,
+        favorite = LawFavorite.objects.get(law_id=law_id,
+                                           user=request.user)
+        favorite.save()
+        return Response(data=NPOLawSerializer(favorite).data,
                         status=status.HTTP_201_CREATED)
 
     def delete(self, request):
         law_id = request.data.get('law_id')
-        saved = LawFavorite.objects.get(law_id=law_id,
-                                        user=request.user)
-        saved.save()
-        return Response(data=NPOLawSerializer(saved).data,
+        favorite = LawFavorite.objects.get(law_id=law_id,
+                                           user=request.user)
+        favorite.save()
+        return Response(data=NPOLawSerializer(favorite).data,
                         status=status.HTTP_204_NO_CONTENT)
