@@ -77,7 +77,7 @@ class LawFavoriteAPIView(APIView):
         return Response(data=NPOLawSerializer(favorite).data)
 
     def post(self, request):
-        law_id = request.data.get('law_id')
+        law_id = int(request.data.get('law_id'))
         favorite = LawFavorite.objects.get(law_id=law_id,
                                            user=request.user)
         favorite.save()
@@ -85,7 +85,7 @@ class LawFavoriteAPIView(APIView):
                         status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        law_id = request.data.get('law_id')
+        law_id = int(request.data.get('law_id'))
         favorite = LawFavorite.objects.get(law_id=law_id,
                                            user=request.user)
         favorite.save()

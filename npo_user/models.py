@@ -30,7 +30,7 @@ class NPOUser(AbstractBaseUser):
     data_joined = models.DateTimeField('data joined', auto_now_add=True)
     is_active = models.BooleanField('active', default=True)
     is_staff = models.BooleanField(default=True)
-    object = UserManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['emil']

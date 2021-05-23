@@ -9,7 +9,7 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = 'created_date'.split()
     list_editable = 'title description'.split()
     list_display = 'id title description image link created_date'.split()
-    search_fields = 'title description'
+    search_fields = 'title description'.split()
 
 
 admin.site.register(News, NewsAdmin)

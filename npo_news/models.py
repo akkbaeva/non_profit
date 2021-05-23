@@ -29,3 +29,4 @@ class NewsFavorite(models.Model):
                              null=True)
     news = models.ForeignKey(News, on_delete=models.CASCADE,
                              null=True)
+

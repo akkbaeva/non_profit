@@ -77,7 +77,7 @@ class PublicationFavoriteAPIView(APIView):
         return Response(data=PublicationFavoriteSerializer(checkbox).data)
 
     def post(self, request):
-        pub_id = request.data.get('pub_id')
+        pub_id = int(request.data.get('pub_id'))
         checkbox = Publication.objects.get(pub_id=pub_id,
                                            user=request.user)
         checkbox.save()
@@ -85,7 +85,7 @@ class PublicationFavoriteAPIView(APIView):
                         status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        pub_id = request.data.get('pub_id')
+        pub_id = int(request.data.get('pub_id'))
         checkbox = Publication.objects.get(pub_id=pub_id,
                                            user_id=request.user)
         checkbox.delete()

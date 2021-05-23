@@ -78,7 +78,7 @@ class NewFavoriteAPIView(APIView):
                         status=status.HTTP_200_OK)
 
     def post(self, request):
-        news_id = request.data.get('news_id')
+        news_id = int(request.data.get('news_id'))
         saved = NewsFavorite.objects.get(news_id=news_id,
                                          user=request.user)
         saved.save()
@@ -86,7 +86,7 @@ class NewFavoriteAPIView(APIView):
                         status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        news_id = request.data.get('news_id')
+        news_id = int(request.data.get('news_id'))
         saved = NewsFavorite.objects.get(news_id=news_id,
                                          user_id=request.user)
         saved.delete()
