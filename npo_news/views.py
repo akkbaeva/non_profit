@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from npo_news.models import News, NewsFavorite
+from npo_news.permissions import ISCLIENT
 from npo_news.serializers import NewsSerializer, NewsFavoriteSerializer
 
 
@@ -71,6 +72,7 @@ class NewDetailAPIView(APIView):
 class NewFavoriteAPIView(APIView):
     allow_methods = ['GET', 'POST', 'DELETE']
     serializer_class = NewsFavoriteSerializer
+    permission_classes = [ISCLIENT]
 
     def get(self, request):
         saved = NewsFavorite.objects.filter(user=request.user)
@@ -79,8 +81,8 @@ class NewFavoriteAPIView(APIView):
 
     def post(self, request):
         news_id = int(request.data.get('news_id'))
-        saved = NewsFavorite.objects.get(news_id=news_id,
-                                         user=request.user)
+        saved = NewsFavorite.objects.create(news_id=news_id,
+                                            user=request.user)
         saved.save()
         return Response(data=NewsFavoriteSerializer(saved).data,
                         status=status.HTTP_201_CREATED)

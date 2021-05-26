@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import redirect
 
 # Create your views here.
 from rest_framework import status
@@ -23,3 +26,24 @@ class RegisterAPIView(APIView):
         return Response(data=NPOUserSerializer(user).data,
                         status=status.HTTP_201_CREATED)
 
+
+class LoginAPIView(APIView):
+
+    def login(self, request, *args, **kwargs):
+        if request.method == "POST":
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.info(request, f"You are now logged in as {username}.")
+                    return redirect("main:homepage")
+                else:
+                    messages.error(request, "Invalid username or password.")
+            else:
+                messages.error(request, "Invalid username or password.")
+        form = AuthenticationForm()
+        return Response(data=NPOUserSerializer(form).data,
+                        status=status.HTTP_202_ACCEPTED)

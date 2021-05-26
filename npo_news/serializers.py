@@ -15,8 +15,8 @@ class NewsSerializer(serializers.ModelSerializer):
 
 
 class NewsFavoriteSerializer(serializers.ModelSerializer):
-    user = NPOUserSerializer
-    news = NewsSerializer
+    user = NPOUserSerializer()
+    news = NewsSerializer()
 
     class Meta:
         model = NewsFavorite

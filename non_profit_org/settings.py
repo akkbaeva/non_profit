@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'npo_news',
     'npo_law',
+    'npo_consultation',
     'npo_publication',
 
 ]

@@ -12,7 +12,7 @@ class Question(models.Model):
         return self.text
 
     def filter(self):
-        return Answer.objects.filter(text=id)
+        return Answer.objects.filter(text=self)
 
 
 class Answer(models.Model):
@@ -21,3 +21,4 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text
+
