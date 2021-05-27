@@ -23,7 +23,7 @@ class NPOUser(AbstractBaseUser):
                                 unique=True,
                                 max_length=100)
     email = models.EmailField('email', null=True,
-                              max_length=100)
+                              max_length=100, unique=True)
     first_name = models.CharField('first name', max_length=30,
                                   blank=True)
     last_name = models.CharField('last name', max_length=30, blank=True)
