@@ -20,3 +20,9 @@ class PublicationFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicationFavorite
         fields = 'id user pub'
+
+
+class PublicationFilterSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publication
+        fields = ('title', 'description')

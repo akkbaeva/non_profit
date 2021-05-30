@@ -2,13 +2,15 @@ from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from npo_law.models import NPOLaw, LawFavorite
-from npo_law.serializers import NPOLawSerializer
+from npo_law.serializers import NPOLawSerializer, LawFilterSearchSerializer
 
 
 class NPOLawAPIView(APIView, PageNumberPagination):
@@ -91,3 +93,13 @@ class LawFavoriteAPIView(APIView):
         favorite.save()
         return Response(data=NPOLawSerializer(favorite).data,
                         status=status.HTTP_204_NO_CONTENT)
+
+
+class LawFilterSearchView(viewsets.ModelViewSet):
+    queryset = NPOLaw.objects.all()
+    serializer_class = LawFilterSearchSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['title', 'description']
+    search_fields = ['=title', '=description']
+    ordering_fields = ['title']
+    ordering = ['title']

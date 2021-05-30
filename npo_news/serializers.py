@@ -21,3 +21,9 @@ class NewsFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsFavorite
         fields = 'id user news'
+
+
+class NewsFilterSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ('title', 'description', 'link')

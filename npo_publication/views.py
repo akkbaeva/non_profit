@@ -1,11 +1,14 @@
 from django.db.models import Q
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from npo_publication.models import Publication
-from npo_publication.serializers import PublicationSerializer, PublicationFavoriteSerializer
+from npo_publication.serializers import PublicationSerializer, PublicationFavoriteSerializer, \
+    PublicationFilterSearchSerializer
 
 
 class PublicationAPIView(APIView, PageNumberPagination):
@@ -91,3 +94,13 @@ class PublicationFavoriteAPIView(APIView):
         checkbox.delete()
         return Response(data=PublicationFavoriteSerializer(checkbox).data,
                         status=status.HTTP_204_NO_CONTENT)
+
+
+class PublicationFilterSearchView(viewsets.ModelViewSet):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationFilterSearchSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['title', 'description']
+    search_fields = ['title', 'description']
+    ordering_fields = ['title']
+    ordering = ['title']

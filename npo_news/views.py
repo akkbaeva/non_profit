@@ -1,5 +1,7 @@
 from django.db.models import Q
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.filters import SearchFilter
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -7,7 +9,7 @@ from rest_framework.views import APIView
 
 from npo_news.models import News, NewsFavorite
 from npo_news.permissions import ISCLIENT
-from npo_news.serializers import NewsSerializer, NewsFavoriteSerializer
+from npo_news.serializers import NewsSerializer, NewsFavoriteSerializer, NewsFilterSearchSerializer
 
 
 class NewAPIView(APIView, PageNumberPagination):
@@ -94,3 +96,13 @@ class NewFavoriteAPIView(APIView):
         saved.delete()
         return Response(data=NewsFavoriteSerializer(saved).data,
                         status=status.HTTP_204_NO_CONTENT)
+
+
+class NewFilterSearchView(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsFilterSearchSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_filter = ['title', 'description', 'link']
+    search_fields = ['title', 'description', 'link']
+    ordering_fields = ['title']
+    ordering = ['title']

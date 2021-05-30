@@ -20,3 +20,10 @@ class LawFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = NPOLaw
         fields = 'id user law'
+
+
+class LawFilterSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NPOLaw
+        fields = ('title', 'description')
+
