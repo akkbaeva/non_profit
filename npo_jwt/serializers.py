@@ -1,5 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 
@@ -14,6 +15,21 @@ class NPOObtainPairSerializer(TokenObtainSerializer):
 
         token['username'] = user.username
         return token
+
+
+class UserFilterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NPOUser
+        fields = ('username',
+                  'first_name',
+                  'last_name',
+                  'email')
+
+
+class UserDuplicateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NPOUser
+        fields = ('username', 'first_name', 'last_name')
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -40,6 +56,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'password': 'Password fields did not match'})
         return attrs
+
+    def validate_username(self, value):
+        data = self.get_initial()
+        username = data.get('username')
+        username_qs = NPOUser.objects.filter(username=username)
+        if username_qs.exists():
+            duplicate_obj = NPOUser.objects.get(username=username)
+            serializer = UserDuplicateSerializer(duplicate_obj)
+            raise ValidationError('This username has been registered!' + str(serializer.data))
+        else:
+            pass
+        return value
 
     def create(self, validated_data):
         user = NPOUser.objects.create(
