@@ -103,6 +103,6 @@ class NewFilterSearchView(viewsets.ModelViewSet):
     serializer_class = NewsFilterSearchSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_filter = ['title', 'description', 'link']
-    search_fields = ['title', 'description', 'link']
+    search_fields = ['=title', '=description', '=link']
     ordering_fields = ['title']
     ordering = ['title']
