@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'npo_publication',
     'npo_jwt',
     'django_filters',
+    'npo_icnl',
 
 ]
 REST_FRAMEWORK = {

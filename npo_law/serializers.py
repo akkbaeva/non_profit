@@ -19,11 +19,11 @@ class LawFavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NPOLaw
-        fields = 'id user law'
+        fields = 'id user law'.split()
 
 
 class LawFilterSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = NPOLaw
-        fields = ('title', 'description')
+        fields = ('id', 'title', 'description')
 

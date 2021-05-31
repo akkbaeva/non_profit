@@ -1,7 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render
 
-# Create your views here.
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.filters import SearchFilter
@@ -101,5 +99,3 @@ class LawFilterSearchView(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['title', 'description']
     search_fields = ['=title', '=description']
-    ordering_fields = ['title']
-    ordering = ['title']

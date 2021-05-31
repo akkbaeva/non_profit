@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('npo_user.urls')),
     path('', include('npo_consultation.urls')),
     path('', include('npo_jwt.urls')),
+    path('', include('npo_icnl.urls')),
 ]
