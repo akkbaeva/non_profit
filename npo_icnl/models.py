@@ -13,6 +13,6 @@ class ICNL(models.Model):
 
 class ICNLFavorite(models.Model):
     user = models.ForeignKey(NPOUser, on_delete=models.CASCADE,
-                             related_name='saved-2')
+                             related_name='saved2', )
     icnl = models.ForeignKey(ICNL, on_delete=models.CASCADE,
                              null=True)

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from npo_icnl.models import ICNL, ICNLFavorite
-from npo_icnl.permissions import ISCLIENT
+# from npo_icnl.permissions import ISCLIENT
 from npo_icnl.serializers import ICNLSerializer, ICNLFavoriteSerializer
 
 
@@ -44,7 +44,7 @@ class ICNLDetailAPIView(generics.GenericAPIView,
 class ICNLFavoriteAPIView(APIView):
     allow_methods = ['GET', 'POST', 'DELETE']
     serializer_class = ICNLFavoriteSerializer
-    permission_classes = [ISCLIENT]
+    # permission_classes = [ISCLIENT, ]
 
     def get(self, request):
         saved = ICNLFavorite.objects.filter(user=request.user)
