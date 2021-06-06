@@ -33,5 +33,5 @@ class NPOUser(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['emil']
+    REQUIRED_FIELDS = ['email']
 
